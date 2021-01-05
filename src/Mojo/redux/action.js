@@ -8,6 +8,8 @@ const actions = {
    DELETE_DATA_VIEW : 'DELETE_DATA_VIEW',
    DELETE_DATA : 'DELETE_DATA',
 
+   EDIT_DATA_VIEW : 'EDIT_DATA_VIEW',
+
    getDataList : payload => ({
       type : actions.GET_DATA_LIST,
       payload
@@ -20,7 +22,12 @@ const actions = {
    deleteDataView : payload =>({
       type : actions.DELETE_DATA_VIEW,
       payload
+   }),
+   editDataView : payload =>({
+      type : actions.EDIT_DATA_VIEW,
+      payload
    })
+
 }
 
 export default actions

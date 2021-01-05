@@ -45,6 +45,12 @@ export default function ViewsReducer (state = initialState, action){
             viewList : action.data,
             loader : false
          }
+
+      case actions.EDIT_DATA_VIEW:
+         return{
+            ...state,
+            loader : true 
+         }
       default:
          return state
    }

@@ -63,10 +63,32 @@ export function * getViewData () {
  })
 }
 
+export function * editDataView () {
+   yield takeEvery('EDIT_DATA_VIEW', function * (payload) {
+     try {
+       let res = yield call(callApi.editDataView, payload)
+       if (res.status === 200) {
+         console.log(res.data, 'PAYLOAD');
+         yield put({
+           type: actions.GET_DATA_LIST,
+           data: res.data,
+           message: 'success'
+         })
+       } else {
+         yield put({ type: actions.GET_DATA_LIST, data: [res.data], message: 'failed' })
+       }
+     } catch (error) {
+       yield put({ type: actions.GET_DATA_LIST, data: [] })
+     }
+   })
+  }
+  
+
  export default function * rootSaga () {
    yield all([
     fork(getViewData),
     fork(addDataView),
-    fork(deleteDataView)
+    fork(deleteDataView),
+    fork(editDataView)
    ])
  }

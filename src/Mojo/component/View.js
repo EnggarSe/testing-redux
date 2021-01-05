@@ -1,17 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Table, Spin, Button, Typography, Pagination, Input } from 'antd'
+import { Table, Spin, Button, Modal, Pagination, Input } from 'antd'
 import action from '../redux/action'
 import Moment from 'react-moment'
 import { PlusOutlined } from '@ant-design/icons';
-const {getDataList, addDataView, deleteDataView} = action
+const {getDataList, addDataView, deleteDataView, editDataView} = action
 
 class View extends Component {
    constructor (props) {
       super(props)
       this.state = {
        sol : null,
-       dataAdd : ''
+       dataAdd : '',
+       modalVisible : false,
+       dataEdit : '',
+       dataEditId : '',
       }
     }
 
@@ -38,6 +41,12 @@ class View extends Component {
       })  
    }
 
+   writeTodoEdit(e) {
+      this.setState({
+         dataEdit : e.target.value
+      })  
+   }
+
    addTodo(){
       const {dataAdd} = this.state
       if(dataAdd!== ''){
@@ -51,8 +60,32 @@ class View extends Component {
 
    deleteTodo (id){
       console.log("MASUK");
-      
       this.props.deleteDataView(id)
+   }
+
+   showModal  (id)  {
+      this.setState({
+         modalVisible : true,
+         dataEditId : id
+      })
+   }
+
+   handleCancel = () =>{
+      this.setState({
+         modalVisible : false
+      })
+   }
+
+   editTodo = () =>{
+      const {dataEdit, dataEditId} = this.state
+      this.props.editDataView({
+         do : dataEdit,
+         id : dataEditId,
+      })
+      this.setState({
+         modalVisible:false
+      })
+
    }
 
     render(){
@@ -85,12 +118,22 @@ class View extends Component {
            align: 'center',
            render: (val, data) => {
              return (
-               <Button
-                 className='crowde-outlined-btn'
-                 onClick={() => this.deleteTodo(data.id)}
-               >
-                 Delete
-               </Button>
+                <div style ={{display:'flex', justifyContent:'center'}}>
+                      <Button
+                        className='crowde-outlined-btn'
+                        onClick={() => this.deleteTodo(data.id)} >
+                        Delete
+                     </Button>
+
+                        <Button
+                        className='crowde-outlined-btn'
+                        onClick={()=>this.showModal(data.id)} >
+                        Edit
+                        </Button>
+                </div>
+              
+
+               
              )
            }
          }
@@ -102,6 +145,10 @@ class View extends Component {
                <Button icon={<PlusOutlined/>} onClick = {()=> this.addTodo()}></Button>
                </div>
                <Table columns={columns} dataSource={data.viewList}/>
+
+               <Modal title="Basic Modal" visible={this.state.modalVisible} onOk = {this.editTodo}  onCancel={this.handleCancel}>
+               <Input onChange = {(e)=> this.writeTodoEdit(e)} placeholder="input with clear icon"/> 
+               </Modal>
             
          </Fragment>
             
@@ -115,5 +162,5 @@ export default connect(
    state => ({
       viewState : state.View
    }),
-   {getDataList, addDataView, deleteDataView}
+   {getDataList, addDataView, deleteDataView, editDataView}
 )(View)
