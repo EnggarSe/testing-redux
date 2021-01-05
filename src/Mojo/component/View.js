@@ -15,6 +15,7 @@ class View extends Component {
        modalVisible : false,
        dataEdit : '',
        dataEditId : '',
+       editAble : ''
       }
     }
 
@@ -90,6 +91,7 @@ class View extends Component {
 
     render(){
       const {data} = this.state
+      const load = data.loader
       console.log(data, 'DATA');
       console.log(this.state.dataAdd, 'dataAdd');
       
@@ -140,6 +142,7 @@ class View extends Component {
        ]
        return(
          <Fragment>
+            <Spin spinning = {load}>
                <div style={{ marginBottom: 16, display: 'flex' }}>
                <Input onChange = {(e)=> this.writeTodo(e)} placeholder="input with clear icon"/> 
                <Button icon={<PlusOutlined/>} onClick = {()=> this.addTodo()}></Button>
@@ -149,6 +152,8 @@ class View extends Component {
                <Modal title="Basic Modal" visible={this.state.modalVisible} onOk = {this.editTodo}  onCancel={this.handleCancel}>
                <Input onChange = {(e)=> this.writeTodoEdit(e)} placeholder="input with clear icon"/> 
                </Modal>
+            </Spin>
+         
             
          </Fragment>
             
