@@ -13,3 +13,7 @@ File yang berhubungan dengan react-redux = src/reducer, src/Actions
 ### 
 
 Masih banyak beberapa kekurangan terhadap codingan yang saya buat, masih tidak ada styling dan beberapa fungsional lain yang masih belum work
+
+## Can access this web 
+
+link : https://mojoo-testing-redux-saga.netlify.app/
